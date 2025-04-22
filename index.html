@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Generative Flow Field</title>
+    <!-- Load p5.js and the p5.dom library -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/addons/p5.dom.min.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- This div will hold the p5 canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- This div will hold our sliders -->
+    <div id="controls-container">
+      <!-- Sliders will be added here by p5.js -->
+    </div>
+
+    <p class="instructions">Press SPACE to change colour palette</p>
+
+    <!-- Load your sketch files AFTER the libraries -->
+    <script src="./particle.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>
