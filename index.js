@@ -18,7 +18,7 @@ let canvas
 
 function setup() {
   let canvasWidth = 360
-  let canvasHeight = 400
+  let canvasHeight = 450
   canvas = createCanvas(canvasWidth, canvasHeight)
   canvas.parent('canvas-container')
 
