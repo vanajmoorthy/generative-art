@@ -20,7 +20,6 @@ body {
 
 canvas {
   display: block; /* Prevents extra space below canvas */
-
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.35);
 }
 
@@ -29,14 +28,15 @@ canvas {
   flex-direction: column; /* Stack controls vertically */
   gap: 10px; /* Space between control rows */
   width: 100%; /* Match canvas width or adjust as needed */
-  max-width: 300px; /* Optional: prevent controls getting too wide */
+  max-width: 360px; /* Optional: prevent controls getting too wide */
   background-color: #fff; /* White background for controls */
   border-radius: 5px;
   margin-bottom: 1rem;
 }
 
 .instructions {
-  font-family: sans-serif;
+  font-family: 'Gabarito', sans-serif;
+  width: 360px;
   font-size: 14px;
   color: #555; /* Grey color */
   text-align: center;
@@ -62,7 +62,10 @@ canvas {
 
 .control-row span {
   flex-basis: 50px; /* Fixed width for value display */
-  font-family: monospace;
+  font-family: 'Gabarito', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
   font-size: 14px;
   text-align: left;
 }

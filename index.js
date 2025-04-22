@@ -17,7 +17,7 @@ let nsValueSpan, amValueSpan, psValueSpan, tsValueSpan, paValueSpan, npValueSpan
 let canvas
 
 function setup() {
-  let canvasWidth = 300
+  let canvasWidth = 360
   let canvasHeight = 400
   canvas = createCanvas(canvasWidth, canvasHeight)
   canvas.parent('canvas-container')
@@ -150,27 +150,38 @@ function createParticles() {
   }
 }
 
+function switchPalette() {
+  // First, check if a slider has focus (important!)
+  let focused = document.activeElement
+  if (focused && focused.type === 'range') {
+    console.log('Slider focused, ignoring palette switch.')
+    return // Don't switch palette if adjusting a slider
+  }
+
+  // --- Palette Switching Logic ---
+  currentPaletteIndex++
+  if (currentPaletteIndex >= allPalettes.length) {
+    currentPaletteIndex = 0 // Wrap around
+  }
+  currentPaletteName = allPalettes[currentPaletteIndex].name
+  console.log('Switched to Palette:', currentPaletteName)
+
+  background(255) // Clear canvas
+  createParticles() // Recreate with new palette
+}
+
+function doubleClicked() {
+  // Optional but good practice: Check if the double-click was inside the canvas bounds
+  if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
+    switchPalette() // Call the shared switching function
+  }
+}
+
 function keyPressed() {
   // Check if the key pressed is the SPACEBAR
   if (key === ' ' || keyCode === 32) {
-    // Still check if a slider is focused
-    let focused = document.activeElement
-    if (focused && focused.type === 'range') {
-      return // Don't switch palette if adjusting a slider
-    }
-
-    // --- Palette Switching Logic ---
-    currentPaletteIndex++
-    if (currentPaletteIndex >= allPalettes.length) {
-      currentPaletteIndex = 0 // Wrap around
-    }
-    currentPaletteName = allPalettes[currentPaletteIndex].name
-    console.log('Switched to Palette:', currentPaletteName)
-
-    background(255) // Clear canvas
-    createParticles() // Recreate with new palette
+    switchPalette() // Call the shared switching function
   }
-  // Other key presses will be ignored for palette switching
 }
 
 function definePalettes() {
