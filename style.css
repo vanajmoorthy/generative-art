@@ -20,19 +20,18 @@ body {
 
 canvas {
   display: block; /* Prevents extra space below canvas */
-  border: 1px solid black;
+
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.35);
 }
 
 #controls-container {
   display: flex;
   flex-direction: column; /* Stack controls vertically */
   gap: 10px; /* Space between control rows */
-  width: 90%; /* Match canvas width or adjust as needed */
-  max-width: 700px; /* Optional: prevent controls getting too wide */
-  padding: 15px;
+  width: 100%; /* Match canvas width or adjust as needed */
+  max-width: 300px; /* Optional: prevent controls getting too wide */
   background-color: #fff; /* White background for controls */
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
 }
 
@@ -65,5 +64,5 @@ canvas {
   flex-basis: 50px; /* Fixed width for value display */
   font-family: monospace;
   font-size: 14px;
-  text-align: right;
+  text-align: left;
 }

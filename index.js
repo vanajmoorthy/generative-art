@@ -17,8 +17,8 @@ let nsValueSpan, amValueSpan, psValueSpan, tsValueSpan, paValueSpan, npValueSpan
 let canvas
 
 function setup() {
-  let canvasWidth = windowWidth * 0.8
-  let canvasHeight = windowHeight * 0.6
+  let canvasWidth = 300
+  let canvasHeight = 400
   canvas = createCanvas(canvasWidth, canvasHeight)
   canvas.parent('canvas-container')
 
