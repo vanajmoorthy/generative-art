@@ -200,21 +200,26 @@ function createParticles() {
 
 function switchPalette() {
   let focused = document.activeElement
+
   if (focused && focused.type === 'range') {
     console.log('Slider focused, ignoring palette switch.')
     return
   }
 
   currentPaletteIndex++
+
   if (currentPaletteIndex >= allPalettes.length) {
     currentPaletteIndex = 0
   }
+
   currentPaletteName = allPalettes[currentPaletteIndex].name
-  console.log('Switched to Palette:', currentPaletteName)
   setPaletteName(currentPaletteName)
 
   background(255)
+
   createParticles()
+
+  isPaused = false
 }
 
 function mousePressed() {
