@@ -66,7 +66,7 @@ function draw() {
 function createControls() {
   let controlsDiv = select('#controls-container')
 
-  nsSlider = createSlider(0.0001, 0.01, 0.001, 0.0001)
+  nsSlider = createSlider(0.0001, 0.05, 0.001, 0.0001)
   nsValueSpan = createSpan('0.001')
   createControlRow(controlsDiv, 'Noise Scale:', nsSlider, nsValueSpan)
 
@@ -128,7 +128,7 @@ function createControls() {
 }
 
 function randomizeSliders() {
-  nsSlider.value(random(0.0001, 0.01))
+  nsSlider.value(random(0.0001, 0.05))
   amSlider.value(random(0, 10))
   psSlider.value(random(0.1, 5))
   tsSlider.value(random(0, 0.02))
