@@ -16,11 +16,18 @@ let nsValueSpan, amValueSpan, psValueSpan, tsValueSpan, paValueSpan, npValueSpan
 
 let canvas
 
+let isPaused = false
+
+let paletteLabelDiv
+
 function setup() {
   let canvasWidth = 360
   let canvasHeight = 450
   canvas = createCanvas(canvasWidth, canvasHeight)
   canvas.parent('canvas-container')
+
+  paletteLabelDiv = createDiv('').id('palette-label')
+  paletteLabelDiv.parent(document.getElementById('palette-label-container'))
 
   createControls()
 
@@ -30,12 +37,20 @@ function setup() {
   createParticles()
   background(255)
 
-  console.log('Current Palette:', currentPaletteName)
-
   npSlider.input(handleNumParticlesChange)
 }
 
+function setPaletteName(name) {
+  if (paletteLabelDiv) {
+    paletteLabelDiv.html(`🎨 ${name}`)
+  }
+}
+
 function draw() {
+  if (isPaused) {
+    return
+  }
+
   updateParametersFromSliders()
 
   for (let p of particles) {
@@ -44,18 +59,8 @@ function draw() {
     p.checkEdges()
   }
 
-  fill(255) // Set fill to background color (white)
-  noStroke() // No border for the clearing rectangle
-  // Adjust width/height if palette names are very long or font size changes
-
-  // Step 2: Draw the Palette Name Text
-  fill(50) // Set fill color for the text (dark grey)
-  noStroke() // Ensure no stroke on the text itself
-  textSize(14) // Choose a readable size
-  textAlign(LEFT, TOP) // Align text starting from the top-left corner
-
-  // Use the global variable to display the current palette name
-  text(` ${currentPaletteName}`, 10, 8) // Draw text with a small margin (x=10, y=8)
+  fill(255)
+  noStroke()
 }
 
 function createControls() {
@@ -67,7 +72,7 @@ function createControls() {
 
   amSlider = createSlider(0, 10, 3, 0.1)
   amValueSpan = createSpan('3.0')
-  createControlRow(controlsDiv, 'Angle Mult:', amSlider, amValueSpan)
+  createControlRow(controlsDiv, 'Angle Multiplier:', amSlider, amValueSpan)
 
   psSlider = createSlider(0.1, 5, 1, 0.1)
   psValueSpan = createSpan('1.0')
@@ -85,9 +90,50 @@ function createControls() {
   swValueSpan = createSpan('10.0')
   createControlRow(controlsDiv, 'Stroke Weight:', swSlider, swValueSpan)
 
-  npSlider = createSlider(100, 5000, 1000, 50)
+  npSlider = createSlider(10, 2000, 1200, 10)
   npValueSpan = createSpan('1000')
   createControlRow(controlsDiv, 'Particles:', npSlider, npValueSpan)
+
+  // 🎛 Toolbar container
+  let buttonBar = createDiv()
+  buttonBar.parent(controlsDiv)
+  buttonBar.style('display', 'flex')
+  buttonBar.style('gap', '10px')
+  buttonBar.style('margin-top', '15px')
+  buttonBar.style('justify-content', 'center')
+
+  // ⏯ Pause/Play button (icon only)
+  let pausePlayButton = createButton('⏸')
+  pausePlayButton.mousePressed(() => {
+    isPaused = !isPaused
+    pausePlayButton.html(isPaused ? '▶' : '⏸')
+  })
+  pausePlayButton.parent(buttonBar)
+
+  // 🎲 Randomize button (label visible)
+  let randomizeButton = createButton('🎲 Randomize')
+  randomizeButton.mousePressed(randomizeSliders)
+  randomizeButton.parent(buttonBar)
+  randomizeButton.addClass('randomize-button')
+
+  // 📷 Save button (icon only)
+  let saveButton = createButton('📷')
+  saveButton.mousePressed(() => saveCanvas('particle-art', 'png'))
+  saveButton.parent(buttonBar)
+}
+
+function randomizeSliders() {
+  nsSlider.value(random(0.0001, 0.01))
+  amSlider.value(random(0, 10))
+  psSlider.value(random(0.1, 5))
+  tsSlider.value(random(0, 0.02))
+  paSlider.value(int(random(1, 256)))
+  swSlider.value(random(0.5, 20))
+  npSlider.value(int(random(100, 5001)))
+
+  updateParametersFromSliders()
+  handleNumParticlesChange()
+  background(255)
 }
 
 function createControlRow(parentDiv, labelText, slider, valueSpan) {
@@ -95,10 +141,12 @@ function createControlRow(parentDiv, labelText, slider, valueSpan) {
   row.addClass('control-row')
 
   let label = createSpan(labelText)
+  label.class('label-span')
   label.parent(row)
 
   slider.parent(row)
 
+  valueSpan.class('value-span')
   valueSpan.parent(row)
 
   row.parent(parentDiv)
@@ -151,44 +199,37 @@ function createParticles() {
 }
 
 function switchPalette() {
-  // First, check if a slider has focus (important!)
   let focused = document.activeElement
   if (focused && focused.type === 'range') {
     console.log('Slider focused, ignoring palette switch.')
-    return // Don't switch palette if adjusting a slider
+    return
   }
 
-  // --- Palette Switching Logic ---
   currentPaletteIndex++
   if (currentPaletteIndex >= allPalettes.length) {
-    currentPaletteIndex = 0 // Wrap around
+    currentPaletteIndex = 0
   }
   currentPaletteName = allPalettes[currentPaletteIndex].name
   console.log('Switched to Palette:', currentPaletteName)
+  setPaletteName(currentPaletteName)
 
-  background(255) // Clear canvas
-  createParticles() // Recreate with new palette
+  background(255)
+  createParticles()
 }
 
-function doubleClicked() {
-  // Optional but good practice: Check if the double-click was inside the canvas bounds
+function mousePressed() {
   if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
     switchPalette() // Call the shared switching function
   }
 }
 
 function keyPressed() {
-  // Check if the key pressed is the SPACEBAR
   if (key === ' ' || keyCode === 32) {
-    switchPalette() // Call the shared switching function
+    switchPalette()
   }
 }
 
 function definePalettes() {
-  // --- KEEP YOUR EXISTING PALETTES HERE ---
-  // Example: Electric Sunset, Neon Future, Tropical Punch, Ocean Depth, Retro Pop, Vivid Contrast, Soft Glow
-
-  // Palette 0: Electric Sunset
   allPalettes.push({
     name: 'Electric Sunset',
     colors: [
@@ -265,8 +306,6 @@ function definePalettes() {
       color(221, 160, 221),
     ],
   })
-
-  // --- ADDING 20 NEW PALETTES ---
 
   // Palette 7: Forest Canopy
   allPalettes.push({
@@ -481,8 +520,9 @@ function definePalettes() {
       color(0, 255, 0, 150),
       color(255, 0, 0, 150),
     ],
-  }) // With alpha
+  })
 
-  // Ensure currentPaletteIndex is valid and set initial name
   currentPaletteName = allPalettes[currentPaletteIndex].name
+
+  setPaletteName(currentPaletteName)
 }
