@@ -94,15 +94,13 @@ function createControls() {
   npValueSpan = createSpan('1000')
   createControlRow(controlsDiv, 'Particles:', npSlider, npValueSpan)
 
-  // 🎛 Toolbar container
   let buttonBar = createDiv()
+
   buttonBar.parent(controlsDiv)
   buttonBar.style('display', 'flex')
   buttonBar.style('gap', '10px')
   buttonBar.style('margin-top', '15px')
   buttonBar.style('justify-content', 'center')
-
-  // ⏯ Pause/Play button (icon only)
 
   const pauseSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`
 
@@ -117,14 +115,14 @@ function createControls() {
 
   pausePlayButton.parent(buttonBar)
 
-  // 🎲 Randomize button (label visible)
   let randomizeButton = createButton('🎲 Randomize')
+
   randomizeButton.mousePressed(randomizeSliders)
   randomizeButton.parent(buttonBar)
   randomizeButton.addClass('randomize-button')
 
-  // 📷 Save button (icon only)
   let saveButton = createButton('📷')
+
   saveButton.mousePressed(() => saveCanvas('particle-art', 'png'))
   saveButton.parent(buttonBar)
 }
@@ -184,16 +182,18 @@ function updateParametersFromSliders() {
 
 function handleNumParticlesChange() {
   if (particles.length !== numParticles) {
-    console.log('Recreating particles:', numParticles)
     createParticles()
-
     background(255)
   }
 }
 
 function createParticles() {
   particles = []
-  if (!allPalettes[currentPaletteIndex]) return
+
+  if (!allPalettes[currentPaletteIndex]) {
+    return
+  }
+
   let activePalette = allPalettes[currentPaletteIndex].colors
 
   for (let i = 0; i < numParticles; i++) {
@@ -223,7 +223,6 @@ function switchPalette() {
   setPaletteName(currentPaletteName)
 
   background(255)
-
   createParticles()
 
   isPaused = false
@@ -231,7 +230,7 @@ function switchPalette() {
 
 function mousePressed() {
   if (mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height) {
-    switchPalette() // Call the shared switching function
+    switchPalette()
   }
 }
 
