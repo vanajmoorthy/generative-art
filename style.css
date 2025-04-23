@@ -78,6 +78,7 @@ canvas {
   cursor: pointer;
   border-radius: 0.25rem;
   font-weight: bold;
+  color: black;
 }
 
 .randomize-button:hover {
@@ -91,6 +92,10 @@ button {
   border: none;
   cursor: pointer;
   transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+
+  background: #f0f0f0;
 }
 
 button:hover {
@@ -105,4 +110,7 @@ button:hover {
   margin-bottom: 0.85rem;
   font-weight: 600;
   color: #353535;
+}
+
+svg {
 }

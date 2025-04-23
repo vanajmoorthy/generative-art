@@ -103,11 +103,18 @@ function createControls() {
   buttonBar.style('justify-content', 'center')
 
   // ⏯ Pause/Play button (icon only)
-  let pausePlayButton = createButton('⏸')
+
+  const pauseSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`
+
+  const playSVG = `<svg width="20" height="20" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg"><polygon points="5,3 19,12 5,21"/></svg>`
+
+  let pausePlayButton = createButton(pauseSVG)
+
   pausePlayButton.mousePressed(() => {
     isPaused = !isPaused
-    pausePlayButton.html(isPaused ? '▶' : '⏸')
+    pausePlayButton.html(isPaused ? playSVG : pauseSVG)
   })
+
   pausePlayButton.parent(buttonBar)
 
   // 🎲 Randomize button (label visible)
